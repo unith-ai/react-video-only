@@ -1,18 +1,23 @@
 import { useEffect, useRef, useState } from "react";
 
 const UNITH_ORIGIN = "https://chat-dev.unith.ai";
+// const UNITH_ORIGIN = "http://localhost:3000";
 function App() {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const [isReady, setIsReady] = useState(false);
   const [value, setValue] = useState("");
 
+  const handleReadyState = (payload: any) => {
+    if (payload && payload.isReady) {
+      setIsReady(true);
+    }
+  };
+
   const handleEvent = (event: MessageEvent) => {
     if (event.origin !== UNITH_ORIGIN) return;
     const payload = event.data.payload;
     const name = event.data.event;
-
-    console.log(event.data.event);
 
     switch (name) {
       case "DH_READY":
@@ -24,15 +29,7 @@ function App() {
     }
   };
 
-  const handleReadyState = (payload: any) => {
-    console.log({ payload });
-    if (payload && payload.isReady) {
-      setIsReady(true);
-    }
-  };
-
   const handleProcessingState = (payload: any) => {
-    console.log({ payload, isReady, isGenerating });
     if (!isReady) return;
     if (payload && payload.processing) {
       setIsGenerating(true);
@@ -58,11 +55,11 @@ function App() {
   };
 
   useEffect(() => {
-    addEventListener("message", handleEvent);
+    window.addEventListener("message", handleEvent);
     return () => {
-      removeEventListener("message", handleEvent);
+      window.removeEventListener("message", handleEvent);
     };
-  }, []);
+  });
 
   return (
     <section className="parent">
@@ -70,6 +67,7 @@ function App() {
         ref={iframeRef}
         id="talkingHeadsIframe"
         src="https://chat-dev.unith.ai/unith-153/test-13428?api_key=234f5a64444649b28805facd3d63887a&mode=video"
+        // src="http://localhost:3000/index.html"
         width="75%"
         height="100%"
         allow="microphone"
