@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
 const UNITH_ORIGIN = "https://chat-dev.unith.ai";
-// const UNITH_ORIGIN = "http://localhost:3000";
 function App() {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [isGenerating, setIsGenerating] = useState(false);
