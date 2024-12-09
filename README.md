@@ -2,4 +2,4 @@
 
 This code base shows a working example of unith's video only mode using react js 
 
-view live example here: [text](https://react-video-only.vercel.app/)
+view live example [here](https://react-video-only.vercel.app/)
