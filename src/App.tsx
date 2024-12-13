@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-const UNITH_ORIGIN = "https://chat-dev.unith.ai";
+const UNITH_ORIGIN = "https://chat.unith.ai";
 function App() {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [isGenerating, setIsGenerating] = useState(false);
@@ -65,7 +65,7 @@ function App() {
       <iframe
         ref={iframeRef}
         id="talkingHeadsIframe"
-        src="https://chat-dev.unith.ai/asdf-171/police-13449?api_key=9220ac63f8204991b9b88dbc7e3ecb2f&mode=video"
+        src="https://chat.unith.ai/Felixandsons-340/physiotherapist-9166?api_key=946a020a69ed4d32a0ac2db20235e4bd&mode=video"
         width="75%"
         height="100%"
         allow="microphone"
