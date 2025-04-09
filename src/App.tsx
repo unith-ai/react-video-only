@@ -7,7 +7,7 @@ function App() {
   const [isReady, setIsReady] = useState(false);
   const [value, setValue] = useState("");
 
-  const handleReadyState = (payload: any) => {
+  const handleReadyState = (payload: { isReady: boolean }) => {
     if (payload && payload.isReady) {
       setIsReady(true);
     }
@@ -28,7 +28,7 @@ function App() {
     }
   };
 
-  const handleProcessingState = (payload: any) => {
+  const handleProcessingState = (payload: { processing: boolean }) => {
     if (!isReady) return;
     if (payload && payload.processing) {
       setIsGenerating(true);
