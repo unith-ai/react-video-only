@@ -76,10 +76,6 @@ const Advanced: React.FC = () => {
         };
     });
 
-    useEffect(() => {
-        console.log({ isGenerating, isReady })
-    }, [isReady, isGenerating])
-
 
     return (
         <section className="parent">
