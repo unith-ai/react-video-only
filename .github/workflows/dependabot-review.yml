@@ -1,0 +1,62 @@
+name: Dependabot Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+  id-token: write
+
+jobs:
+  review:
+    if: github.actor == 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.head_ref }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          prompt: |
+            You are reviewing a Dependabot dependency update PR.
+
+            **Your tasks:**
+
+            1. **Identify the update:**
+               - Which package and version changed?
+               - Is this a patch, minor, or major version update?
+
+            2. **Run the test suite:**
+               - Install dependencies: `npm ci`
+               - Run linting: `npm run lint`
+               - Run tests: `npm run test`
+               - Build the project: `npm run build`
+
+            3. **If tests fail:**
+               - Investigate the failure
+               - Fix breaking changes if possible
+               - Commit fixes with message: "fix: update code for <package> <version>"
+
+            4. **Provide a concise summary:**
+               - Package: [name] ([old] → [new])
+               - Update type: [patch/minor/major]
+               - Tests: [✓ pass / ✗ fail]
+               - Fixes applied: [yes/no - brief description]
+               - Recommendation: [safe to merge / needs review]
+
+            Do NOT approve or merge the PR.
+            Do NOT run `gh pr comment` - your summary will be posted automatically.
+          claude_args: "--max-turns 50 --model claude-sonnet-4-5-20250929 --dangerously-skip-permissions"
+          allowed_bots: "dependabot[bot]"
+          use_sticky_comment: true
